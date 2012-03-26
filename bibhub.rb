@@ -2,7 +2,7 @@ $:.unshift File.dirname(__FILE__)
 
 require 'rubygems'
 require 'sinatra/base'
-require 'omniauth'
+require 'omniauth-twitter'
 require 'erb'
 require 'mongo_mapper'
 require 'models/user'
@@ -26,7 +26,6 @@ class BibhubApp < Sinatra::Base
   def get_user
     @user ||= User.find_by_user_id(session[:user_id])
   end
-
 
   get '/' do
     erb :index
