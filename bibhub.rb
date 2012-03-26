@@ -7,7 +7,7 @@ require 'omniauth-twitter'
 require 'erb'
 require 'mongo_mapper'
 require 'models/user'
-require 'models/bibtex'
+require 'models/bibliography'
 require 'open-uri'
 require 'bibtex'
 require 'kconv'
@@ -15,15 +15,15 @@ require 'kconv'
 class BibhubApp < Sinatra::Base
 
   MongoMapper.database = "bibhub"
-  
+
   configure do
     use Rack::Session::Cookie, :secret => "change me"
-    
+
     set :logging, true
     set :dump_errors, true
     set :show_exceptions, true
   end
-  
+
   use OmniAuth::Builder do
     provider :twitter,'P2ZQaY38pGcxwMgShg3rXQ','aUKFW4xzx2tJEkK1dxnsZZCqJhQzhFV8uHUTGxjUc'
   end
@@ -43,20 +43,26 @@ class BibhubApp < Sinatra::Base
     @user = User.find_or_initialize_by_user_id(@auth['uid'])
     @user.token = @auth['credentials']['token']
     @user.secret = @auth['credentials']['secret']
-
     @user.save
 
     erb :index2
   end
-  
+
   get '/bibtex/url' do
     erb :url
   end
 
   post '/bibtex/url' do
     return "" unless params.key? "bibtex"
-    bib = BibTeX.parse params["bibtex"][:tempfile].read.toutf8
-    Bibtex::create(bib.to_hash)
-    bib.to_json
+
+    bibtex = BibTeX.parse params["bibtex"][:tempfile].read.toutf8
+    bibtex.each{|e|
+      bib = Bibliography::create(e.to_hash)
+      bib.creator = get_user
+      bib.updater = get_user
+      bib.save
+    }
+
+    bibtex.to_json
   end
 end
