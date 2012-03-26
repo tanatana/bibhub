@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 $:.unshift File.dirname(__FILE__)
 
 require 'rubygems'
@@ -6,6 +7,10 @@ require 'omniauth-twitter'
 require 'erb'
 require 'mongo_mapper'
 require 'models/user'
+require 'models/bibtex'
+require 'open-uri'
+require 'bibtex'
+require 'kconv'
 
 class BibhubApp < Sinatra::Base
 
@@ -42,5 +47,16 @@ class BibhubApp < Sinatra::Base
     @user.save
 
     erb :index2
+  end
+  
+  get '/bibtex/url' do
+    erb :url
+  end
+
+  post '/bibtex/url' do
+    return "" unless params.key? "bibtex"
+    bib = BibTeX.parse params["bibtex"][:tempfile].read.toutf8
+    Bibtex::create(bib.to_hash)
+    bib.to_json
   end
 end
