@@ -1,3 +1,8 @@
 <div class="row">
   <p>作成者: <%= @bibtex.creator.screen_name %></p>
+  <p>
+    <a href="/api/bibtex/<%= @bibtex.id %>.bib">
+      BibTeXをダウンロード
+  </a>
+  </p>
 </div>

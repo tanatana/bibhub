@@ -52,14 +52,15 @@ class BibhubApp < Sinatra::Base
   end
 
   get '/auth/:name/callback' do
-    @auth = request.env['omniauth.auth']
-    session[:user_id] = @auth['uid']
+    auth = request.env['omniauth.auth']
+    session[:user_id] = auth['uid']
 
-    @user = User.find_or_initialize_by_user_id(@auth['uid'])
-    @user.token = @auth['credentials']['token']
-    @user.secret = @auth['credentials']['secret']
-    @user.screen_name = @auth['info']['nickname']
-    @user.save
+    User.find_or_initialize_by_user_id(auth['uid']){|user|
+      user.token = auth['credentials']['token']
+      user.secret = auth['credentials']['secret']
+      user.screen_name = auth['info']['nickname']
+      user.save
+    }
 
     redirect '/'
   end
@@ -118,24 +119,25 @@ class BibhubApp < Sinatra::Base
 
   get '/api/user/recent' do
     return unless login?
-    @user.id
     content_type :json
     Bibliography.where(:creator_id => @user.id).limit(20).to_json
   end
 
   get '/api/user/id/:user_id' do
-    user = User.find_by_user_id params[:user_id]
     content_type :json
+    user = User.find_by_user_id params[:user_id]
     user.to_json
   end
 
-  get '/api/bibtex/:bibtex_id' do
-    bib = Bibliography.find_by_id(params[:bibtex_id])
-    bib.to_json
+  get '/api/bibtex/*.bib' do
+    return "error" if params[:splat].size < 1
+
+    content_type "text/x-bibtex"
+    bib = Bibliography.find_by_id(params[:splat][0])
+    BibTeX::Bibliography.new.add(BibTeX::Entry.new(bib.bibtex.symbolize_keys)).to_s(:quotes => [])
   end
 
   get '/api/search' do
-
     content_type :json
 
     p bibs = Bibliography.all('bibtex.title'.to_sym => /#{@params[:word]}/)
