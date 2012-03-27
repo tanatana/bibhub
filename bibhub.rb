@@ -48,7 +48,7 @@ class BibhubApp < Sinatra::Base
   end
 
   get '/auth/:name/callback' do
-    pp @auth = request.env['omniauth.auth']
+    @auth = request.env['omniauth.auth']
     session[:user_id] = @auth['uid']
 
     @user = User.find_or_initialize_by_user_id(@auth['uid'])
@@ -60,6 +60,10 @@ class BibhubApp < Sinatra::Base
     erb :index
   end
 
+  get '/auth/failure' do
+    "login failed: #{params[:message]}"
+  end
+  
   get '/login' do
     erb :login
   end
