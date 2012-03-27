@@ -134,6 +134,8 @@ class BibhubApp < Sinatra::Base
   end
 
   get '/api/search' do
-    "search"
+    "search #{params[:word]}, oreder_by #{params[:order_by]}"
+
+    bib = Bibliography.where()
   end
 end
