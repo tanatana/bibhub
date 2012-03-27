@@ -53,6 +53,7 @@ class BibhubApp < Sinatra::Base
   end
 
   get '/bibtex/url' do
+    @title = "BibTeXをアップロード"
     erb :url
   end
 

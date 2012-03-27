@@ -1,23 +1,36 @@
 <html>
   <head>
-    <title>bibhub</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="screen" />
+    <title>
+      BibHub
+      - <%= @title%>
+    </title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen" />
   </head>
   <body>
     <div class="navbar">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="/">
-            BibHub
-          </a>
-          <ul class="nav">
-            <li class="active">
-              <a href="/bibtex/url">BibTeXを追加</a>
-            </li>
-          </ul>
+         <div class="row">
+           <div class="span2">
+             <a class="brand" href="/">BibHub</a>
+           </div>
+           <div class="span10">
+             <ul class="nav">
+               <li><a href="/bibtex/url">BibTeXを追加</a></li>
+               <li><a href="/logout">ログアウト</a></li>
+             </ul>
+           </div>
+         </div>
         </div>
       </div>
     </div>
-    <%= yield %>
+    <div class="container">
+      <% if @title %>
+      <div class="page-header">
+        <h1><%= @title %></h1>
+      </div>
+      <% end %>
+      <%= yield %>
+    </div>
   </body>
 </html>
