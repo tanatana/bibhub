@@ -42,12 +42,13 @@ class BibhubApp < Sinatra::Base
   end
 
   get '/auth/:name/callback' do
-    @auth = request.env['omniauth.auth']
+    pp @auth = request.env['omniauth.auth']
     session[:user_id] = @auth['uid']
 
     @user = User.find_or_initialize_by_user_id(@auth['uid'])
     @user.token = @auth['credentials']['token']
     @user.secret = @auth['credentials']['secret']
+    @user.screen_name = @auth['info']['nickname']
     @user.save
 
     erb :index
