@@ -51,6 +51,45 @@ class BibhubApp < Sinatra::Base
 
     erb :index
   end
+  
+  get '/logout' do
+    session.delete(:user_id)
+    redirect '/'
+  end
+
+  get '/user/:user_id' do
+    "hello"
+  end
+
+  get '/user/:user_id/:bibtex_id' do
+    "bibtex"
+  end
+
+  get '/user/:user_id/search' do
+    "search"
+  end
+
+  get '/user/:user_id/:tag' do
+    "tag"
+  end
+
+  get '/api/:user_id' do
+    params[:user_id]
+  end
+
+  get '/api/:user_id/:bibtex_id' do
+    "bibtex"
+  end
+
+  get '/api/:user_id/search' do
+    "search"
+  end
+
+  get '/api/:user_id/:tag' do
+    "tag"
+  end
+
+  
 
   get '/bibtex/url' do
     @title = "BibTeXをアップロード"
