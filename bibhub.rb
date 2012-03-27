@@ -29,15 +29,21 @@ class BibhubApp < Sinatra::Base
     provider :twitter,'P2ZQaY38pGcxwMgShg3rXQ','aUKFW4xzx2tJEkK1dxnsZZCqJhQzhFV8uHUTGxjUc'
   end
 
-  def get_user
-    @user ||= User.find_by_user_id(session[:user_id])
+  helpers do
+    def login?
+      return @user if @user
+      return unless session[:user_id]
+      @user = User.find_by_user_id session[:user_id]
+      return unless @user
+      @user
+    end
   end
 
   get '/' do
-    if get_user
+    if login?
       erb :index
     else
-      erb :login
+      redirect 'login'
     end
   end
 
@@ -54,8 +60,33 @@ class BibhubApp < Sinatra::Base
     erb :index
   end
 
+  get '/login' do
+    erb :login
+  end
+
   get '/logout' do
     session.delete(:user_id)
+    redirect '/'
+  end
+
+  get '/bibtex/url' do
+    redirect '/login' unless login?
+    @title = "BibTeXをアップロード"
+    erb :url
+  end
+
+  post '/bibtex/url' do
+    return "" unless login?
+    return "" unless params.key? "bibtex"
+
+    bibtex = BibTeX.parse params["bibtex"][:tempfile].read.toutf8
+    bibtex.each{|e|
+      bib = Bibliography::create(e.to_hash)
+      bib.creator = @user
+      bib.updater = @user
+      bib.save
+    }
+
     redirect '/'
   end
 
@@ -88,24 +119,5 @@ class BibhubApp < Sinatra::Base
 
   get '/api/search' do
     "search"
-  end
-
-  get '/bibtex/url' do
-    @title = "BibTeXをアップロード"
-    erb :url
-  end
-
-  post '/bibtex/url' do
-    return "" unless params.key? "bibtex"
-
-    bibtex = BibTeX.parse params["bibtex"][:tempfile].read.toutf8
-    bibtex.each{|e|
-      bib = Bibliography::create(e.to_hash)
-      bib.creator = get_user
-      bib.updater = get_user
-      bib.save
-    }
-
-    bibtex.to_json
   end
 end
