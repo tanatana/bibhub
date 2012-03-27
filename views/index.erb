@@ -18,7 +18,7 @@
     <% if @bibtex %>
     <% @bibtex.each do |b| %>
     <li>
-      <a href="/bibtex/<%= b.id.to_s %>"><%= b.bibtex["title"] %></a>
+      <a href="/bibtex/<%= b[:id] %>"><%= b[:bibtex].title.to_s(:filter => :latex) %></a>
     </li>
     <% end %>
     <% end %>

@@ -43,7 +43,9 @@ class BibhubApp < Sinatra::Base
   get '/' do
     if login?
       @title = "ようこそ #{@user.screen_name} さん!"
-      @bibtex = Bibliography.where({:creator_id => @user.id}).limit(20)
+      @bibtex = Bibliography.where({creator_id: @user.id}).limit(20).map{|e|
+        {id: e.id.to_s, bibtex: BibTeX::Entry.new(e.bibtex.to_hash)}
+      }
       erb :index
     else
       redirect 'login'
