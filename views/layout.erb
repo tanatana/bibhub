@@ -1,8 +1,23 @@
 <html>
-<head>
-<title>bibhub</title>
-</head>
-<body>
-<%= yield %>
-</body>
+  <head>
+    <title>bibhub</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">
+            BibHub
+          </a>
+          <ul class="nav">
+            <li class="active">
+              <a href="/bibtex/url">BibTeXを追加</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <%= yield %>
+  </body>
 </html>

@@ -33,7 +33,11 @@ class BibhubApp < Sinatra::Base
   end
 
   get '/' do
-    erb :index
+    if get_user
+      erb :index
+    else
+      erb :login
+    end
   end
 
   get '/auth/:name/callback' do
@@ -45,7 +49,7 @@ class BibhubApp < Sinatra::Base
     @user.secret = @auth['credentials']['secret']
     @user.save
 
-    erb :index2
+    erb :index
   end
 
   get '/bibtex/url' do
