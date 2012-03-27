@@ -138,7 +138,7 @@ class BibhubApp < Sinatra::Base
 
     content_type :json
 
-    bibs = Bibliography.all(:creator_id => "4f71531a1d78912541000001")
+    p bibs = Bibliography.all('bibtex.title'.to_sym => /#{@params[:word]}/)
     bibs_json = ""
 
     bibs.each do |bib|
