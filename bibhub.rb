@@ -109,7 +109,8 @@ class BibhubApp < Sinatra::Base
   get '/bibtex/:bibtex_id' do
     @bibtex = Bibliography.find_by_id(params[:bibtex_id]).to_bibtex
     @title = "#{@bibtex.title}"
-
+    p @bibtex.author
+    @author = @bibtex.author.split(/\s+and\s+/)
     erb :bibtex
   end
 

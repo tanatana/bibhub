@@ -1,8 +1,19 @@
 <div class="row">
+  <dl><dt>著者</dt>
+    <% @author.each do |a| %>
+    <dd><%= a %></dd>
+    <% end %>
+  </dl>
   <p>作成者: <%= @bibtex.creator.screen_name %></p>
   <p>
     <a href="/api/bibtex/<%= @bibtex.id %>.bib">
       BibTeXをダウンロード
   </a>
   </p>
+  コメント：<br>
+  <textarea name="comment" rows="10" cols="50"></textarea>
+  </p>
+    <form action="" method="POST" enctype="multipart/form-data">
+    	  <p><input type="submit" value="送信"></p>
+    </form>
 </div>
