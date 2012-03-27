@@ -1,18 +1,25 @@
-<div class="container">
-  <div class="row">
-    <div class="span4"><h1>"名前"のページ</h1></div>
-    <div class="span8"></div>
+<div class="row">
+  <div class="span4">
   </div>
-<HR>
-
-<table border="3">
-<tr>
-<th>
-プロフィール
-</th>
-<th>最近したコメント</th>
-</tr><tr>
-<th>自分の論文</th>
-<th>最近見た論文</th>
-</tr>
-</table>
+  <div class="span8"></div>
+  <table border="3">
+    <tr>
+      <th>
+        プロフィール
+      </th>
+      <th>最近したコメント</th>
+    </tr><tr>
+      <th>自分の論文</th>
+      <th>最近見た論文</th>
+    </tr>
+  </table>
+  <hr>
+  <ul>
+    <% if @bibtex %>
+    <% @bibtex.each do |b| %>
+    <li>
+      <a href="/bibtex/<%= b.id.to_s %>"><%= b.bibtex["title"] %></a>
+    </li>
+    <% end %>
+    <% end %>
+</div>

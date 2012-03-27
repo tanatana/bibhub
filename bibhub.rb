@@ -13,6 +13,7 @@ require 'bibtex'
 require 'kconv'
 require 'json'
 
+
 class BibhubApp < Sinatra::Base
 
   MongoMapper.database = "bibhub"
@@ -41,6 +42,8 @@ class BibhubApp < Sinatra::Base
 
   get '/' do
     if login?
+      @title = "ようこそ #{@user.screen_name} さん!"
+      @bibtex = Bibliography.where({:creator_id => @user.id}).limit(20)
       erb :index
     else
       redirect 'login'
@@ -57,7 +60,7 @@ class BibhubApp < Sinatra::Base
     @user.screen_name = @auth['info']['nickname']
     @user.save
 
-    erb :index
+    redirect '/'
   end
 
   get '/auth/failure' do
@@ -85,24 +88,26 @@ class BibhubApp < Sinatra::Base
 
     bibtex = BibTeX.parse params["bibtex"][:tempfile].read.toutf8
     bibtex.each{|e|
-      bib = Bibliography::create(e.to_hash)
-      bib.creator = @user
-      bib.updater = @user
-      bib.save
+      data = Bibliography::create(:bibtex => e.to_hash)
+      data.creator = @user
+      data.updater = @user
+      data.save
     }
 
     redirect '/'
   end
 
   get '/user/:screen_name' do
-    @title = "ユーザー情報"
-    @user = Bibliography.find_by_screen_name params[:screen_name]
+    @user = User.find_by_screen_name params[:screen_name]
+    @title = "#{@user.screen_name}"
+
     erb :user
   end
 
   get '/bibtex/:bibtex_id' do
     @title = "BibTeX情報"
-    @bibtex = Bibliography.find_by_id params[:bibtex_id]
+    @bibtex = Bibliography.find_by_id(params[:bibtex_id])
+
     erb :bibtex
   end
 
@@ -110,7 +115,14 @@ class BibhubApp < Sinatra::Base
     "search"
   end
 
-  get '/api/user/:user_id' do
+  get '/api/user/recent' do
+    return unless login?
+    @user.id
+    content_type :json
+    Bibliography.where(:creator_id => @user.id).limit(20).to_json
+  end
+
+  get '/api/user/id/:user_id' do
     user = User.find_by_user_id params[:user_id]
     content_type :json
     user.to_json
