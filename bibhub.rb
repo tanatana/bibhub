@@ -66,7 +66,7 @@ class BibhubApp < Sinatra::Base
   get '/auth/failure' do
     "login failed: #{params[:message]}"
   end
-  
+
   get '/login' do
     erb :login
   end
@@ -134,8 +134,15 @@ class BibhubApp < Sinatra::Base
   end
 
   get '/api/search' do
-    "search #{params[:word]}, oreder_by #{params[:order_by]}"
 
-    bib = Bibliography.where()
+    content_type :json
+
+    bibs = Bibliography.all(:creator_id => "4f71531a1d78912541000001")
+    bibs_json = ""
+
+    bibs.each do |bib|
+      bibs_json << bib.to_json
+    end
+    bibs_json
   end
 end
