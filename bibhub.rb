@@ -43,9 +43,8 @@ class BibhubApp < Sinatra::Base
   get '/' do
     if login?
       @title = "ようこそ #{@user.screen_name} さん!"
-      @bibtex = Bibliography.where({creator_id: @user.id}).limit(20).map{|e|
-        {id: e.id.to_s, bibtex: BibTeX::Entry.new(e.bibtex.to_hash)}
-      }
+      @bibtex = Bibliography.where({creator_id:@user.id})
+        .limit(20).map{|e| e.to_bibtex}
       erb :index
     else
       redirect 'login'
@@ -107,8 +106,8 @@ class BibhubApp < Sinatra::Base
   end
 
   get '/bibtex/:bibtex_id' do
-    @title = "BibTeX情報"
-    @bibtex = Bibliography.find_by_id(params[:bibtex_id])
+    @bibtex = Bibliography.find_by_id(params[:bibtex_id]).to_bibtex
+    @title = "#{@bibtex[:bibtex].title.to_s(:filter => :latex)}"
 
     erb :bibtex
   end
@@ -131,7 +130,7 @@ class BibhubApp < Sinatra::Base
   end
 
   get '/api/bibtex/:bibtex_id' do
-    bib = Bibliography.find_by_id params[:bibtex_id]
+    bib = Bibliography.find_by_id(params[:bibtex_id])
     bib.to_json
   end
 
