@@ -1,25 +1,35 @@
 <div class="row">
   <div class="span4">
+    <table border="3">
+      <tr>
+        <th>
+          プロフィール
+        </th>
+        <th>最近したコメント</th>
+      </tr><tr>
+        <th>自分の論文</th>
+        <th>最近見た論文</th>
+      </tr>
+    </table>
   </div>
-  <div class="span8"></div>
-  <table border="3">
-    <tr>
-      <th>
-        プロフィール
-      </th>
-      <th>最近したコメント</th>
-    </tr><tr>
-      <th>自分の論文</th>
-      <th>最近見た論文</th>
-    </tr>
-  </table>
-  <hr>
-  <ul>
-    <% if @bibtex %>
-    <% @bibtex.each do |b| %>
-    <li>
-      <a href="/bibtex/<%= b.id %>"><%= b[:bibtex].title.to_s(:filter => :latex) %></a>
-    </li>
-    <% end %>
-    <% end %>
+  <div class="span8">
+  </div>
+</div>
+<hr />
+<div class="row">
+  <div class="span6">
+    <h3>最近追加された論文</h3>
+    <ul>
+      <% if @bibtex %>
+      <% @bibtex.each do |b| %>
+      <li>
+        <a href="/bibtex/<%= b.id %>"><%= b.author %></a>
+      </li>
+      <% end %>
+      <% end %>
+    </ul>
+  </div>
+  <div class="span6">
+    <h3>コメント</h3>
+  </div>
 </div>

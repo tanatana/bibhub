@@ -107,7 +107,7 @@ class BibhubApp < Sinatra::Base
 
   get '/bibtex/:bibtex_id' do
     @bibtex = Bibliography.find_by_id(params[:bibtex_id]).to_bibtex
-    @title = "#{@bibtex[:bibtex].title.to_s(:filter => :latex)}"
+    @title = "#{@bibtex.title}"
 
     erb :bibtex
   end
