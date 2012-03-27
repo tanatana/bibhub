@@ -11,6 +11,7 @@ require 'models/bibliography'
 require 'open-uri'
 require 'bibtex'
 require 'kconv'
+require 'json'
 
 class BibhubApp < Sinatra::Base
 
@@ -51,45 +52,42 @@ class BibhubApp < Sinatra::Base
 
     erb :index
   end
-  
+
   get '/logout' do
     session.delete(:user_id)
     redirect '/'
   end
 
-  get '/user/:user_id' do
-    "hello"
+  get '/user/:screen_name' do
+    @title = "ユーザー情報"
+    @user = Bibliography.find_by_screen_name params[:screen_name]
+    erb :user
   end
 
-  get '/user/:user_id/:bibtex_id' do
-    "bibtex"
+  get '/bibtex/:bibtex_id' do
+    @title = "BibTeX情報"
+    @bibtex = Bibliography.find_by_id params[:bibtex_id]
+    erb :bibtex
   end
 
-  get '/user/:user_id/search' do
+  get '/search' do
     "search"
   end
 
-  get '/user/:user_id/:tag' do
-    "tag"
+  get '/api/user/:user_id' do
+    user = User.find_by_user_id params[:user_id]
+    content_type :json
+    user.to_json
   end
 
-  get '/api/:user_id' do
-    params[:user_id]
+  get '/api/bibtex/:bibtex_id' do
+    bib = Bibliography.find_by_id params[:bibtex_id]
+    bib.to_json
   end
 
-  get '/api/:user_id/:bibtex_id' do
-    "bibtex"
-  end
-
-  get '/api/:user_id/search' do
+  get '/api/search' do
     "search"
   end
-
-  get '/api/:user_id/:tag' do
-    "tag"
-  end
-
-  
 
   get '/bibtex/url' do
     @title = "BibTeXをアップロード"
