@@ -3,6 +3,8 @@ require 'bibtex'
 class Bibliography
   include MongoMapper::Document
 
+  many :notes
+
   timestamps!
   userstamps!
 
