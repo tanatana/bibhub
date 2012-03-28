@@ -25,21 +25,7 @@
       <% @bibtex.each do |b| %>
       <li>
         <a href="/bibtex/<%= b.id %>"><%= b.title %></a>
-        <% if @user.exports.include? b %>
-        <form method="POST" action="/api/user/export/remove">
-          <input type="hidden" name="bibtex_id" value="<%= b.id %>" />
-          <input type="submit"
-                 class="btn btn-primary"
-                 value="エクスポートリストから削除"/>
-        </form>
-        <% else %>
-        <form method="POST" action="/api/user/export/add">
-          <input type="hidden" name="bibtex_id" value="<%= b.id %>" />
-          <input type="submit"
-                 class="btn"
-                 value="エクスポートリストに追加"/>
-        </form>
-        <% end %>
+        <%= export_button @user, b %>
       </li>
       <% end %>
     </ul>

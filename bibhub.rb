@@ -37,6 +37,12 @@ class BibhubApp < Sinatra::Base
       return unless @user
       @user
     end
+
+    def export_button(user, bibtex)
+      @user = user
+      @bibtex = bibtex
+      erb :export_button
+    end
   end
 
   get '/' do
@@ -108,6 +114,7 @@ class BibhubApp < Sinatra::Base
   end
 
   get '/bibtex/:bibtex_id' do
+    @user = login?
     @bibtex = Bibliography.find_by_id(params[:bibtex_id]).to_bibtex
     @title = "#{@bibtex.title}"
     @author = @bibtex.author.split(/\s+and\s+/)
