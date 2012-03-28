@@ -11,9 +11,9 @@
   <tbody>
     <% @comments.each do |c| %>
     <tr>
-      <td><%= c.comment %> <br>"<a href="/bibtex/<%= c.bibliographys_id %>"><%= Bibliography.find_by_id(c.bibliographys_id).to_bibtex.title %></a>" </td>
-      <td><%= c.creator.screen_name %></td>
-      <td><%= c.created_at.localtime.strftime("%Y %m/%d %H:%M") %></td>
+      <td><%=h c.comment %> <br>"<a href="/bibtex/<%= c.bibliographys_id %>"><%=h Bibliography.find_by_id(c.bibliographys_id).to_bibtex.title %></a>" </td>
+      <td><%=h c.creator.screen_name %></td>
+      <td><%=h c.created_at.localtime.strftime("%Y %m/%d %H:%M") %></td>
     </tr>
     <% end %>
   </tbody>
