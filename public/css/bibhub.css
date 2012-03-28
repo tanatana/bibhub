@@ -1,8 +1,13 @@
-div.navbar > div.navbar-inner > div.container > div.row {
-    width: 980px;
-    margin: auto;
+dl.author {
+    
 }
 
-div.navbar > div.navbar-inner > div.container > div.row > div.span10 > ul{
-    float: right;
+dl.author dt{
+    
+}
+
+dl.author dd{
+    display: inline-block;
+    border: 0px #ccc solid;
+    border-width: 0px 0px 1px 0px;
 }
