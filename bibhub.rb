@@ -45,7 +45,7 @@ class BibhubApp < Sinatra::Base
       @title = "ようこそ #{@user.screen_name} さん!"
       @bibtex = Bibliography.where({creator_id:@user.id})
         .limit(20).map{|e| e.to_bibtex}
-      @comments = Comment.where({creator_id:@user.id}).limit(20)
+      @comments = Comment.where({creator_id:@user.id}).limit(20).sort(:created_at.desc)
       erb :index
     else
       redirect 'login'
@@ -110,7 +110,7 @@ class BibhubApp < Sinatra::Base
   get '/bibtex/:bibtex_id' do
     @bibtex = Bibliography.find_by_id(params[:bibtex_id]).to_bibtex
     @title = "#{@bibtex.title}"
-    p @bibtex.author
+    @bibtex.author
     @author = @bibtex.author.split(/\s+and\s+/)
     erb :bibtex
   end
