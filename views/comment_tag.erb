@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="span6">
+  <%= @comment.comment %> /by <%= @comment.creator.screen_name %>
+  <%= @comment.created_at %>
+  </div>
+  <div class="span2">
+    <input class="btn" type="button" value="削除">
+  </div>
+</div>
