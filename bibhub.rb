@@ -70,12 +70,12 @@ class BibhubApp < Sinatra::Base
 
   get '/bibtex/recent' do
     @title = "最近追加された論文"
-    @bibtex = Bibliography.where().sort(:created_at.desc).map{|e| e.to_bibtex}
+    @bibtex = Bibliography.where.sort(:created_at.desc).map{|e| e.to_bibtex}
     erb :index
   end
 
   get '/comments/recent' do
-    @comments = Comment.where().limit(20).sort(:created_at.desc)
+    @comments = Comment.where.sort(:created_at.desc).limit(20)
     erb :recent_comments
   end
 

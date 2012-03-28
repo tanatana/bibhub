@@ -1,7 +1,7 @@
 class Comment
   include MongoMapper::Document
-  belongs_to :bibliographys
-  
+  belongs_to :bibliography
+
   key :comment, String
 
   timestamps!
