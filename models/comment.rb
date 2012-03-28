@@ -1,8 +1,9 @@
 class Comment
-  include MongoMapper::EmbeddedDocument
+  include MongoMapper::Document
+  belongs_to :bibliographys
   
-  key :creator, User
   key :comment, String
 
   timestamps!
+  userstamps!
 end

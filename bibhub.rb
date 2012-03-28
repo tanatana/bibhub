@@ -152,8 +152,10 @@ class BibhubApp < Sinatra::Base
 
   post '/api/bibtex/add_comment' do
     @user = User.find_by_user_id session[:user_id]
+    comment = Comment.create({:creator => @user, :comment => params[:comment]})
+
     @bibtex = Bibliography.find_by_id(params[:bibtex_id])
-    p @bibtex.comments << Comment.new(:creator => @user, :comment => params[:comment] )
+    @bibtex.comments << comment
     @bibtex.save
 
     redirect "/bibtex/#{params[:bibtex_id]}"
