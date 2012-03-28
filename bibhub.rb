@@ -154,4 +154,20 @@ class BibhubApp < Sinatra::Base
 
     redirect "/bibtex/#{params[:bibtex_id]}"
   end
+
+  post '/api/user/export/add' do
+    return "error" unless login?
+    @user.exports << Bibliography.find_by_id(params[:bibtex_id])
+    @user.save
+    redirect '/'
+  end
+
+  post '/api/user/export/remove' do
+    return "error" unless login?
+    bib = @user.exports.find_by_id(params[:bibtex_id])
+    return "error" unless bib
+    @user.exports = @user.exports.delete_if{|e| e.id == bib.id}
+    @user.save
+    redirect '/'
+  end
 end
