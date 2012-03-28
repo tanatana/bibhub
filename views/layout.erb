@@ -5,7 +5,6 @@
       - <%= @title%>
     </title>
     <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="/css/bibhub.css" type="text/css" media="screen" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script type="text/javascript">
@@ -16,21 +15,25 @@
 
   </head>
   <body>
-    <div class="navbar">
-      <div class="navbar-inner">
-        <div class="container">
-         <div class="row">
-           <div class="span2">
-             <a class="brand" href="/">BibHub</a>
-           </div>
-           <div class="span10">
-             <ul class="nav">
-               <li><a data-toggle="modal" href="#myModal">BibTeXを追加</a></li>
-               <li><a href="/logout">ログアウト</a></li>
-             </ul>
-           </div>
-         </div>
-        </div>
+    <div class="container">
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="container">
+            <a class="brand" href="#">BibHub</a>
+            <div class="nav-collapse">
+              <ul class="nav pull-right">
+                <li><form class="navbar-search pull-left" method="get" action="/api/search" style="margin-top: 7px;">
+                    <input type="text" class="search-query span2" placeholder="Search" style="height: 23px;" name="word">
+                </form></li>
+                <li><a data-toggle="modal" href="#myModal">BibTeXを追加</a></li>
+
+                <li class="divider-vertical"></li>
+                <li><a href="/logout">ログアウト</a></li>
+                
+              </ul>
+            </div><!-- /.nav-collapse -->
+          </div>
+        </div><!-- /navbar-inner -->
       </div>
     </div>
     <div class="container">
@@ -49,7 +52,7 @@
         <h3>BibteXを登録</h3>
       </div>
       <div class="modal-body">
-        <form action="" method="POST">
+        <form action="/" method="POST">
           <p>BibTeXのURLを指定</p>
           <div class="row">
             <div class="span3">
@@ -60,7 +63,7 @@
             </div>
           </div>
         </form>
-        <form action="" method="POST" enctype="multipart/form-data">
+        <form action="/bibtex/url" method="POST" enctype="multipart/form-data">
           <p>アップロードするBibTeXを選択</p>
           <div class="row">
             <div class="span3">
