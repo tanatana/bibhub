@@ -22,18 +22,23 @@ dl.author dd{
 /* } */
 
 table.bibtex th.title{
-    width: 55%;
+    width: 44%;
 }
 table.bibtex th.author{
-    width: 15%;
+    width: 14%;
 }
 table.bibtex th.year{
-    width: 15%;
+    width: 14%;
 }
 
 table.bibtex th.journal{
-    width: 15%;
+    width: 14%;
 }
+
+table.bibtex th.created_at{
+    width: 14%;
+}
+
 
 /* table.bibtex td.export_btn_col{ */
 /*     text-align: right; */

@@ -51,7 +51,7 @@ class BibhubApp < Sinatra::Base
 
     if login?
       @title = "ようこそ #{@user.screen_name} さん!"
-      @bibtex = Bibliography.where({creator_id:@user.id}).map{|e| e.to_bibtex}
+      @bibtex = Bibliography.where({creator_id:@user.id}).sort(:created_at.desc).map{|e| e.to_bibtex}
       @comments = Comment.where({creator_id:@user.id}).limit(20).sort(:created_at.desc)
     end
 
