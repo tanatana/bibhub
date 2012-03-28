@@ -20,6 +20,6 @@
 </form>
 <ul>
   <% @bibtex.comments.all(:order => :created_at.desc).each do |comment|%>
-  <li><%= comment.comment %> /by <%= comment.creator.screen_name %> <%= comment.creator.created_at %> </li>
+  <li><%= comment.comment %> /by <%= comment.creator.screen_name %> <%= comment.created_at %> </li>
   <% end %>
 </ul>
