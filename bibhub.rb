@@ -20,7 +20,6 @@ class BibhubApp < Sinatra::Base
 
   configure do
     use Rack::Session::Cookie, :secret => "change me"
-
     set :logging, true
     set :dump_errors, true
     set :show_exceptions, true
@@ -41,27 +40,28 @@ class BibhubApp < Sinatra::Base
   end
 
   get '/' do
+    @comments = []
+    @bibtex = []
+
     if login?
       @title = "ようこそ #{@user.screen_name} さん!"
       @bibtex = Bibliography.where({creator_id:@user.id})
         .limit(20).map{|e| e.to_bibtex}
       @comments = Comment.where({creator_id:@user.id}).limit(20).sort(:created_at.desc)
-      erb :index
-    else
-      redirect 'login'
     end
+
+    erb :index
   end
 
   get '/auth/:name/callback' do
     auth = request.env['omniauth.auth']
     session[:user_id] = auth['uid']
 
-    User.find_or_initialize_by_user_id(auth['uid']){|user|
-      user.token = auth['credentials']['token']
-      user.secret = auth['credentials']['secret']
-      user.screen_name = auth['info']['nickname']
-      user.save
-    }
+    user = User.find_or_initialize_by_user_id(auth['uid'])
+    user.token = auth['credentials']['token']
+    user.secret = auth['credentials']['secret']
+    user.screen_name = auth['info']['nickname']
+    user.save
 
     redirect '/'
   end
@@ -91,10 +91,10 @@ class BibhubApp < Sinatra::Base
 
     bibtex = BibTeX.parse params["bibtex"][:tempfile].read.toutf8
     bibtex.each{|e|
-      data = Bibliography::create(:bibtex => e.to_hash)
-      data.creator = @user
-      data.updater = @user
-      data.save
+      bib = Bibliography::create(:bibtex => e.to_hash)
+      bib.creator = @user
+      bib.updater = @user
+      bib.save
     }
 
     redirect '/'
@@ -110,8 +110,8 @@ class BibhubApp < Sinatra::Base
   get '/bibtex/:bibtex_id' do
     @bibtex = Bibliography.find_by_id(params[:bibtex_id]).to_bibtex
     @title = "#{@bibtex.title}"
-    @bibtex.author
     @author = @bibtex.author.split(/\s+and\s+/)
+
     erb :bibtex
   end
 
@@ -155,5 +155,3 @@ class BibhubApp < Sinatra::Base
     redirect "/bibtex/#{params[:bibtex_id]}"
   end
 end
-
-

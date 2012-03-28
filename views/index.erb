@@ -1,42 +1,24 @@
 <div class="row">
-  <div class="span6">
-    <h3>BibTeXを検索</h3>
-    <form method="GET" id="" action="">
-      <label>
-        <input type="text" name="" value="" />
-      </label>
-      <input type="submit" class="btn" name="" value="検索" />
-    </form>
+  <div class="span3">
+    <ul class="nav nav-list">
+      <li class="nav-header">
+        メニュー
+      </li>
+      <li class="active">
+        <a href="#">あなたの論文リスト</a>
+      </li>
+      <li>
+        <a href="#">最近追加された論文</a>
+      </li>
+      <li>
+        <a href="#">最近のコメント</a>
+      </li>
+      <li>
+        <a href="#">BibTeXのエクスポート</a>
+      </li>
+    </ul>
   </div>
-  <div class="span6">
-    <h3>BibTeXを登録</h3>
-    <form action="" method="POST">
-      <p>BibTeXのURLを指定</p>
-      <div class="row">
-        <div class="span3">
-          <input type="text" name="" value="" />
-        </div>
-        <div class="span1">
-          <input type="submit" class="btn"/>
-        </div>
-      </div>
-    </form>
-    <form action="" method="POST" enctype="multipart/form-data">
-      <p>アップロードするBibTeXを選択</p>
-      <div class="row">
-        <div class="span3">
-          <input type="file" name= "bibtex">
-        </div>
-        <div class="span1">
-          <input type="submit" class="btn"/>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-<hr />
-<div class="row">
-  <div class="span6">
+  <div class="span9">
     <h3>最近追加された論文</h3>
     <ul>
       <% if @bibtex %>
@@ -48,12 +30,5 @@
       <% end %>
     </ul>
   </div>
-  <div class="span6">
-    <h3>あなたの残したコメント</h3>
-    <ul>
-      <% @comments.each do |c| %>
-      <li><a href="/bibtex/<%= c.bibliographys_id %>"><%= c.comment %> /by <%= c.creator.screen_name %> (<%= c.created_at %>)</a></li>
-      <% end %>
-    </ul>
-  </div>
 </div>
+<hr />
