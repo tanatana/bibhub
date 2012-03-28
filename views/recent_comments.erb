@@ -11,7 +11,7 @@
   <tbody>
     <% @comments.each do |c| %>
     <tr>
-      <td><a href="/bibtex/<%= c.bibliographys_id %>"><%= c.comment %></a></td>
+      <td><%= c.comment %> /"<a href="/bibtex/<%= c.bibliographys_id %>"><%= Bibliography.find_by_id(c.bibliographys_id).to_bibtex.title %></a>" </td>
       <td><%= c.creator.screen_name %></td>
       <td><%= c.created_at %></td>
     </tr>
