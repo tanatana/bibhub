@@ -79,11 +79,8 @@ class BibhubApp < Sinatra::Base
   end
 
   get '/comments/recent' do
-    @comments = []
-    if login?
-      @comments = Comment.where().limit(20).sort(:created_at.desc)
-    end
-    
+    @comments = Comment.where().limit(20).sort(:created_at.desc)
+
     erb :recent_comments
   end
   
