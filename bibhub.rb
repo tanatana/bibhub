@@ -45,6 +45,7 @@ class BibhubApp < Sinatra::Base
       @title = "ようこそ #{@user.screen_name} さん!"
       @bibtex = Bibliography.where({creator_id:@user.id})
         .limit(20).map{|e| e.to_bibtex}
+      @comments = Comment.where({creator_id:@user.id}).limit(20)
       erb :index
     else
       redirect 'login'
@@ -152,12 +153,14 @@ class BibhubApp < Sinatra::Base
 
   post '/api/bibtex/add_comment' do
     @user = User.find_by_user_id session[:user_id]
-    comment = Comment.create({:creator => @user, :comment => params[:comment]})
 
     @bibtex = Bibliography.find_by_id(params[:bibtex_id])
+    comment = Comment.create({:creator => @user, :comment => params[:comment], :bibliographys_id => params[:bibtex_id]})
     @bibtex.comments << comment
     @bibtex.save
 
     redirect "/bibtex/#{params[:bibtex_id]}"
   end  
 end
+
+

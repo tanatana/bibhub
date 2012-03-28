@@ -49,6 +49,11 @@
     </ul>
   </div>
   <div class="span6">
-    <h3>コメント</h3>
+    <h3>あなたの残したコメント</h3>
+    <ul>
+      <% @comments.each do |c| %>
+      <li><a href="/bibtex/<%= c.bibliographys_id %>"><%= c.comment %> /by <%= c.creator.screen_name %> (<%= c.created_at %>)</a></li>
+      <% end %>
+    </ul>
   </div>
 </div>
