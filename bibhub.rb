@@ -141,14 +141,7 @@ class BibhubApp < Sinatra::Base
 
   get '/api/search' do
     content_type :json
-
-    p bibs = Bibliography.all('bibtex.title'.to_sym => /#{@params[:word]}/)
-    bibs_json = ""
-
-    bibs.each do |bib|
-      bibs_json << bib.to_json
-    end
-    bibs_json
+    Bibliography.all('bibtex.title'.to_sym => /#{@params[:word]}/).map{|e| e.to_bibtex}.to_json
   end
 
   post '/api/bibtex/add_comment' do
@@ -160,7 +153,7 @@ class BibhubApp < Sinatra::Base
     @bibtex.save
 
     redirect "/bibtex/#{params[:bibtex_id]}"
-  end  
+  end
 end
 
 
