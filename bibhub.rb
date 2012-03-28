@@ -43,7 +43,7 @@ class BibhubApp < Sinatra::Base
       @bibtex = bibtex
       erb :export_button, :layout => false;
     end
-    
+
     def comment_tag(comment)
       "#{comment.comment} /by #{comment.creator.screen_name} #{comment.created_at}"
     end
@@ -57,9 +57,11 @@ class BibhubApp < Sinatra::Base
       @title = "ようこそ #{@user.screen_name} さん!"
       @bibtex = Bibliography.where({creator_id:@user.id}).sort(:created_at.desc).map{|e| e.to_bibtex}
       @comments = Comment.where({creator_id:@user.id}).limit(20).sort(:created_at.desc)
+      erb :index
+    else
+      @title = "Twitterでログイン!"
+      erb :login
     end
-
-    erb :index
   end
 
   get '/auth/:name/callback' do
@@ -79,17 +81,13 @@ class BibhubApp < Sinatra::Base
     "login failed: #{params[:message]}"
   end
 
-  get '/login' do
-    erb :login
-  end
-
   get '/logout' do
     session.delete(:user_id)
     redirect '/'
   end
 
   get '/bibtex/url' do
-    redirect '/login' unless login?
+    redirect '/' unless login?
     @title = "BibTeXをアップロード"
     erb :url
   end
