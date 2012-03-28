@@ -11,9 +11,14 @@
   </a>
   </p>
   コメント：<br>
-  <textarea name="comment" rows="10" cols="50"></textarea>
-  </p>
-    <form action="" method="POST" enctype="multipart/form-data">
-    	  <p><input type="submit" value="送信"></p>
-    </form>
+  <form action="/api/bibtex/add_comment" method="POST" enctype="multipart/form-data"> 
+    <textarea name="comment" rows="10" cols="50"></textarea>
+    <input type="hidden" value="<%= @bibtex.id %>" name="bibtex_id">
+    <input type="submit" value="送信">
+  </form>
+  <ul>
+    <% @bibtex.comments.each do |comment|%>
+    <li><%= comment.comment %> /by <%= comment.creator.screen_name %> <%= comment.creator.created_at %> </li>
+    <% end %>
+  </ul>
 </div>

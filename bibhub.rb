@@ -149,4 +149,13 @@ class BibhubApp < Sinatra::Base
     end
     bibs_json
   end
+
+  post '/api/bibtex/add_comment' do
+    @user = User.find_by_user_id session[:user_id]
+    @bibtex = Bibliography.find_by_id(params[:bibtex_id])
+    p @bibtex.comments << Comment.new(:creator => @user, :comment => params[:comment] )
+    @bibtex.save
+
+    redirect "/bibtex/#{params[:bibtex_id]}"
+  end  
 end
