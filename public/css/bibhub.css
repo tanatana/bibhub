@@ -1,0 +1,8 @@
+div.navbar > div.navbar-inner > div.container > div.row {
+    width: 980px;
+    margin: auto;
+}
+
+div.navbar > div.navbar-inner > div.container > div.row > div.span10 > ul{
+    float: right;
+}
