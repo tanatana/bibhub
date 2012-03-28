@@ -43,11 +43,12 @@ class BibhubApp < Sinatra::Base
     def export_button(user, bibtex)
       @user = user
       @bibtex = bibtex
-      erb :export_button, :layout => false;
+      erb :export_button, :layout => false
     end
 
     def comment_tag(comment)
-      "#{comment.comment} /by #{comment.creator.screen_name} #{comment.created_at}"
+      @comment = comment
+      erb :comment_tag, :layout => false
     end
   end
 
