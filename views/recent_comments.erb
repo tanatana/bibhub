@@ -9,16 +9,13 @@
     </tr>
   </thead>
   <tbody>
-
     <% @comments.each do |c| %>
     <tr>
-      <td><%= c.comment %>
-      </td><td><%= c.creator.screen_name %>
-      </td><td><%= c.created_at %></td>
+      <td><%= c.comment %></td>
+      <td><%= c.creator.screen_name %></td>
+      <td><%= c.created_at %></td>
     </tr>
     <% end %>
   </tbody>
 </table>
 <% end %>
-
-

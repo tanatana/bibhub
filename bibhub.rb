@@ -66,15 +66,8 @@ class BibhubApp < Sinatra::Base
   end
 
   get '/bibtex/recent' do
-    @comments = []
-    @bibtex = []
-
-    if login?
-      @title = "ようこそ #{@user.screen_name} さん!"
-      @bibtex = Bibliography.where().sort(:created_at.desc).map{|e| e.to_bibtex}
-
-    end
-
+    @title = "最近追加された論文"
+    @bibtex = Bibliography.where().sort(:created_at.desc).map{|e| e.to_bibtex}
     erb :index
   end
 
@@ -83,7 +76,6 @@ class BibhubApp < Sinatra::Base
 
     erb :recent_comments
   end
-  
 
   get '/auth/:name/callback' do
     auth = request.env['omniauth.auth']
