@@ -3,7 +3,7 @@
   <dd><%= a %></dd>
   <% end %>
 </dl>
-<p>作成者: <%= @bibtex.creator.screen_name %></p>
+<dl><dt>作成者</dt><dd><%= @bibtex.creator.screen_name %></dd></dl>
 <p>
   <a href="/api/bibtex/<%= @bibtex.id %>.bib">
     BibTeXをダウンロード

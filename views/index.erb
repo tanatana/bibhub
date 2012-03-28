@@ -1,11 +1,24 @@
 <h3>最近追加された論文</h3>
 <% if @bibtex %>
-<ul>
-  <% @bibtex.each do |b| %>
-  <li>
-    <a href="/bibtex/<%= b.id %>"><%= b.title %></a>
-    <%= export_button @user, b %>
-  </li>
-  <% end %>
-</ul>
+<table class="table bibtex">
+  <thead>
+    <tr>
+      <th class="title">タイトル</th>
+      <th class="author">著者</th>
+      <th class="year">発表年</th>
+      <th class="journal">ジャーナル</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <% @bibtex.each do |b| %>
+    <tr>
+      <td><a href="/bibtex/<%= b.id %>"><%= b.title %><br><br><%= export_button @user, b %></a>
+      </td><td><%= b.author.split(/\s+and\s+/).first %>
+      </td><td class="year"><%= b.year %>
+      </td><td><%= b.journal %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
 <% end %>

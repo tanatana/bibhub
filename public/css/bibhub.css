@@ -11,3 +11,32 @@ dl.author dd{
     border: 0px #ccc solid;
     border-width: 0px 0px 1px 0px;
 }
+
+
+/* table.bibtex{ */
+/* } */
+
+/* table.bibtex th{ */
+/*     border: 1px solid #eee; */
+/*     border-width: 0px 0px 1px 0px; */
+/* } */
+
+table.bibtex th.title{
+    width: 55%;
+}
+table.bibtex th.author{
+    width: 15%;
+}
+table.bibtex th.year{
+    width: 15%;
+}
+
+table.bibtex th.journal{
+    width: 15%;
+}
+
+/* table.bibtex td.export_btn_col{ */
+/*     text-align: right; */
+/*     border: 1px solid #eee; */
+/*     border-width: 0px 0px 1px 0px; */
+/* } */
