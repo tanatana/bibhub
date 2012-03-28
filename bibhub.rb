@@ -43,6 +43,10 @@ class BibhubApp < Sinatra::Base
       @bibtex = bibtex
       erb :export_button, :layout => false;
     end
+    
+    def comment_tag(comment)
+      "#{comment.comment} /by #{comment.creator.screen_name} #{comment.created_at}"
+    end
   end
 
   get '/' do
@@ -163,7 +167,8 @@ class BibhubApp < Sinatra::Base
     @bibtex.comments << comment
     @bibtex.save
 
-    redirect "/bibtex/#{params[:bibtex_id]}"
+    JSON.unparse({result: true,
+                   html: comment_tag(comment)})
   end
 
   post '/api/user/export/add' do

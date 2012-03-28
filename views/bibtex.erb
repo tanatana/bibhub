@@ -13,13 +13,13 @@
   <% end %>
 </p>
 コメント：<br>
-<form action="/api/bibtex/add_comment" method="POST" enctype="multipart/form-data">
-  <textarea name="comment" rows="10" cols="50"></textarea>
+<form action="/api/bibtex/add_comment" id="commentPostForm">
+  <textarea id="commentText" name="comment" rows="10" cols="50"></textarea>
   <input type="hidden" value="<%= @bibtex.id %>" name="bibtex_id">
   <input type="submit" value="送信">
 </form>
-<ul>
+<ul id="commentList">
   <% @bibtex.comments.all(:order => :created_at.desc).each do |comment|%>
-  <li><%= comment.comment %> /by <%= comment.creator.screen_name %> <%= comment.created_at %> </li>
+  <li> <%= comment_tag(comment) %></li>
   <% end %>
 </ul>
