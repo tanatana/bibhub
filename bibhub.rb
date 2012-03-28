@@ -23,6 +23,8 @@ class BibhubApp < Sinatra::Base
     set :logging, true
     set :dump_errors, true
     set :show_exceptions, true
+
+    include ERB::Util
   end
 
   use OmniAuth::Builder do
