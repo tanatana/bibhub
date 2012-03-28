@@ -29,7 +29,7 @@
 
                 <li class="divider-vertical"></li>
                 <li><a href="/logout">ログアウト</a></li>
-                
+
               </ul>
             </div><!-- /.nav-collapse -->
           </div>
@@ -42,10 +42,34 @@
         <h1><%= @title %></h1>
       </div>
       <% end %>
-      <%= yield %>
+      <div class="row">
+        <div class="span3">
+          <ul class="nav nav-list">
+            <li class="nav-header">
+              メニュー
+            </li>
+            <li class="divider"></li>
+            <li>
+              <a href="#">あなたの論文リスト</a>
+            </li>
+            <li>
+              <a href="#">最近追加された論文</a>
+            </li>
+            <li>
+              <a href="#">最近のコメント</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+              <a href="#">BibTeXのエクスポート</a>
+            </li>
+          </ul>
+        </div>
+        <div class="span9">
+          <%= yield %>
+        </div>
+      </div>
+      <hr />
     </div>
-
-
     <div class="modal" id="myModal" style="display: none;">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">×</a>
@@ -79,6 +103,6 @@
         <a href="#myModal" data-toggle="modal" class="btn">Close</a>
       </div>
     </div>
-    
+
   </body>
 </html>

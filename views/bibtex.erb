@@ -1,27 +1,25 @@
-<div class="row">
-  <dl><dt>著者</dt>
-    <% @author.each do |a| %>
-    <dd><%= a %></dd>
-    <% end %>
-  </dl>
-  <p>作成者: <%= @bibtex.creator.screen_name %></p>
-  <p>
-    <a href="/api/bibtex/<%= @bibtex.id %>.bib">
-      BibTeXをダウンロード
-    </a>
-    <% if @user %>
-    <%= export_button(@user ,@bibtex) %>
-    <% end %>
-  </p>
-  コメント：<br>
-  <form action="/api/bibtex/add_comment" method="POST" enctype="multipart/form-data">
-    <textarea name="comment" rows="10" cols="50"></textarea>
-    <input type="hidden" value="<%= @bibtex.id %>" name="bibtex_id">
-    <input type="submit" value="送信">
-  </form>
-  <ul>
-    <% @bibtex.comments.all(:order => :created_at.desc).each do |comment|%>
-    <li><%= comment.comment %> /by <%= comment.creator.screen_name %> <%= comment.creator.created_at %> </li>
-    <% end %>
-  </ul>
-</div>
+<dl><dt>著者</dt>
+  <% @author.each do |a| %>
+  <dd><%= a %></dd>
+  <% end %>
+</dl>
+<p>作成者: <%= @bibtex.creator.screen_name %></p>
+<p>
+  <a href="/api/bibtex/<%= @bibtex.id %>.bib">
+    BibTeXをダウンロード
+  </a>
+  <% if @user %>
+  <%= export_button(@user ,@bibtex) %>
+  <% end %>
+</p>
+コメント：<br>
+<form action="/api/bibtex/add_comment" method="POST" enctype="multipart/form-data">
+  <textarea name="comment" rows="10" cols="50"></textarea>
+  <input type="hidden" value="<%= @bibtex.id %>" name="bibtex_id">
+  <input type="submit" value="送信">
+</form>
+<ul>
+  <% @bibtex.comments.all(:order => :created_at.desc).each do |comment|%>
+  <li><%= comment.comment %> /by <%= comment.creator.screen_name %> <%= comment.creator.created_at %> </li>
+  <% end %>
+</ul>

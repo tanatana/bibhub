@@ -1,35 +1,11 @@
-<div class="row">
-  <div class="span3">
-    <ul class="nav nav-list">
-      <li class="nav-header">
-        メニュー
-      </li>
-      <li class="active">
-        <a href="#">あなたの論文リスト</a>
-      </li>
-      <li>
-        <a href="#">最近追加された論文</a>
-      </li>
-      <li>
-        <a href="#">最近のコメント</a>
-      </li>
-      <li>
-        <a href="#">BibTeXのエクスポート</a>
-      </li>
-    </ul>
-  </div>
-  <div class="span9">
-    <h3>最近追加された論文</h3>
-    <% if @bibtex %>
-    <ul>
-      <% @bibtex.each do |b| %>
-      <li>
-        <a href="/bibtex/<%= b.id %>"><%= b.title %></a>
-        <%= export_button @user, b %>
-      </li>
-      <% end %>
-    </ul>
-    <% end %>
-  </div>
-</div>
-<hr />
+<h3>最近追加された論文</h3>
+<% if @bibtex %>
+<ul>
+  <% @bibtex.each do |b| %>
+  <li>
+    <a href="/bibtex/<%= b.id %>"><%= b.title %></a>
+    <%= export_button @user, b %>
+  </li>
+  <% end %>
+</ul>
+<% end %>
