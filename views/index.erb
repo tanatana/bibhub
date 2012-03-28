@@ -1,18 +1,37 @@
 <div class="row">
-  <div class="span4">
-    <table border="3">
-      <tr>
-        <th>
-          プロフィール
-        </th>
-        <th>最近したコメント</th>
-      </tr><tr>
-        <th>自分の論文</th>
-        <th>最近見た論文</th>
-      </tr>
-    </table>
+  <div class="span6">
+    <h3>BibTeXを検索</h3>
+    <form method="GET" id="" action="">
+      <label>
+        <input type="text" name="" value="" />
+      </label>
+      <input type="submit" class="btn" name="" value="検索" />
+    </form>
   </div>
-  <div class="span8">
+  <div class="span6">
+    <h3>BibTeXを登録</h3>
+    <form action="" method="POST">
+      <p>BibTeXのURLを指定</p>
+      <div class="row">
+        <div class="span3">
+          <input type="text" name="" value="" />
+        </div>
+        <div class="span1">
+          <input type="submit" class="btn"/>
+        </div>
+      </div>
+    </form>
+    <form action="" method="POST" enctype="multipart/form-data">
+      <p>アップロードするBibTeXを選択</p>
+      <div class="row">
+        <div class="span3">
+          <input type="file" name= "bibtex">
+        </div>
+        <div class="span1">
+          <input type="submit" class="btn"/>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
 <hr />
@@ -23,7 +42,7 @@
       <% if @bibtex %>
       <% @bibtex.each do |b| %>
       <li>
-        <a href="/bibtex/<%= b.id %>"><%= b.author %></a>
+        <a href="/bibtex/<%= b.id %>"><%= b.title %></a>
       </li>
       <% end %>
       <% end %>
