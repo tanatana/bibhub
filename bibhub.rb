@@ -56,6 +56,7 @@ class BibhubApp < Sinatra::Base
     if login?
       @title = "ようこそ #{@user.screen_name} さん!"
       @bibtex = Bibliography.where({creator_id:@user.id}).sort(:created_at.desc).map{|e| e.to_bibtex}
+
       @comments = Comment.where({creator_id:@user.id}).limit(20).sort(:created_at.desc)
       erb :index
     else
@@ -63,6 +64,29 @@ class BibhubApp < Sinatra::Base
       erb :login
     end
   end
+
+  get '/bibtex/recent' do
+    @comments = []
+    @bibtex = []
+
+    if login?
+      @title = "ようこそ #{@user.screen_name} さん!"
+      @bibtex = Bibliography.where().sort(:created_at.desc).map{|e| e.to_bibtex}
+
+    end
+
+    erb :index
+  end
+
+  get '/comments/recent' do
+    @comments = []
+    if login?
+      @comments = Comment.where().limit(20).sort(:created_at.desc)
+    end
+    
+    erb :recent_comments
+  end
+  
 
   get '/auth/:name/callback' do
     auth = request.env['omniauth.auth']

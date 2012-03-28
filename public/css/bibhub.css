@@ -39,6 +39,19 @@ table.bibtex th.created_at{
     width: 14%;
 }
 
+table.comments th.comment{
+    width: 60%;
+}
+
+table.comments th.creator{
+    width: 20%;
+}
+
+table.comments th.created_at{
+    width: 20%;
+}
+
+
 
 /* table.bibtex td.export_btn_col{ */
 /*     text-align: right; */
