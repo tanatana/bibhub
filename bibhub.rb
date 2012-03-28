@@ -73,7 +73,6 @@ class BibhubApp < Sinatra::Base
 
   get '/comments/recent' do
     @comments = Comment.where().limit(20).sort(:created_at.desc)
-
     erb :recent_comments
   end
 
@@ -99,32 +98,6 @@ class BibhubApp < Sinatra::Base
     redirect '/'
   end
 
-  get '/bibtex/url' do
-    redirect '/' unless login?
-    @title = "BibTeXをアップロード"
-    erb :url
-  end
-
-  post '/bibtex/url' do
-    return "" unless login?
-    return "" unless params.key? "bibtex"
-
-    bibtex = BibTeX.parse params["bibtex"][:tempfile].read.toutf8
-    bibtex.each{|e|
-      hash = e.to_hash
-      bib = Bibliography.where("bibtex.title".to_sym => hash[:title]).first
-      unless bib
-        bib = Bibliography.new(:bibtex => e.to_hash)
-        bib.creator = @user
-      end
-      bib.updater = @user
-      bib.bibtex = hash
-      bib.save
-    }
-
-    redirect '/'
-  end
-
   get '/user/:screen_name' do
     @user = User.find_by_screen_name params[:screen_name]
     @title = "#{@user.screen_name}"
@@ -145,46 +118,18 @@ class BibhubApp < Sinatra::Base
     "search"
   end
 
-  get '/api/user/recent' do
-    return unless login?
-    content_type :json
-    Bibliography.where(:creator_id => @user.id).limit(20).to_json
-  end
-
   get '/api/user/id/:user_id' do
     content_type :json
     user = User.find_by_user_id params[:user_id]
     user.to_json
   end
 
-  get '/api/bibtex/*.bib' do
-    return "error" if params[:splat].size < 1
-
-    content_type "text/x-bibtex"
-    bib = Bibliography.find_by_id(params[:splat][0])
-    BibTeX::Bibliography.new.add(BibTeX::Entry.new(bib.bibtex.symbolize_keys)).to_s(:quotes => [])
-  end
-
-  get '/api/search' do
-    content_type :json
-    Bibliography.all('bibtex.title'.to_sym => /#{@params[:word]}/i).map{|e| e.to_bibtex}.to_json
-  end
-
-  post '/api/bibtex/add_comment' do
-    @user = User.find_by_user_id session[:user_id]
-
-    @bibtex = Bibliography.find_by_id(params[:bibtex_id])
-    comment = Comment.create({:creator => @user, :comment => params[:comment], :bibliographys_id => params[:bibtex_id]})
-    @bibtex.comments << comment
-    @bibtex.save
-
-    JSON.unparse({result: true,
-                   html: comment_tag(comment)})
-  end
-
   post '/api/user/export/add' do
-    return "error" unless login?
+    content_type :json
+    return JSON.unparse({result: false}) unless login?
     bib = Bibliography.find_by_id(params[:bibtex_id])
+
+    return JSON.unparse({result: false}) unless bib
     @user.exports << bib
     @user.save
 
@@ -195,9 +140,12 @@ class BibhubApp < Sinatra::Base
   end
 
   post '/api/user/export/remove' do
-    return "error" unless login?
+    content_type :json
+
+    return JSON.unparse({result: false}) unless login?
     bib = @user.exports.find_by_id(params[:bibtex_id])
-    return "error" unless bib
+    return JSON.unparse({result: false}) unless bib
+
     @user.exports = @user.exports.delete_if{|e| e.id == bib.id}
     @user.save
 
@@ -205,5 +153,56 @@ class BibhubApp < Sinatra::Base
         result: true,
         html: export_button(@user, bib)
       })
+  end
+
+  post '/api/bibtex/upload' do
+    content_type :json
+    if not login? or not params.key? "bibtex"
+      return JSON.unparse({
+          result: false
+        })
+    end
+
+    bibtex = BibTeX.parse params["bibtex"][:tempfile].read.toutf8
+    bibtex.each{|e|
+      hash = e.to_hash
+      bib = Bibliography.where("bibtex.title".to_sym => hash[:title]).first
+      unless bib
+        bib = Bibliography.new(:bibtex => e.to_hash)
+        bib.creator = @user
+      end
+      bib.updater = @user
+      bib.bibtex = hash
+      bib.save
+    }
+
+    bib.to_json
+  end
+
+  get '/api/bibtex/*.bib' do
+    return "error" if params[:splat].size < 1
+
+    content_type "text/x-bibtex"
+    bib = Bibliography.find_by_id(params[:splat][0])
+    BibTeX::Bibliography.new.add(BibTeX::Entry.new(bib.bibtex.symbolize_keys)).to_s(:quotes => [])
+  end
+
+  post '/api/bibtex/comment/add' do
+    @user = User.find_by_user_id session[:user_id]
+    @bibtex = Bibliography.find_by_id(params[:bibtex_id])
+
+    content_type :json
+    return JSON.unparse({result: false}) if not @user or not @bibtex
+
+    comment = Comment.create({:creator => @user, :comment => params[:comment], :bibliographys_id => params[:bibtex_id]})
+    @bibtex.comments << comment
+    @bibtex.save
+
+    JSON.unparse({result: true, html: comment_tag(comment)})
+  end
+
+  get '/api/search' do
+    content_type :json
+    Bibliography.all('bibtex.title'.to_sym => /#{@params[:word]}/i).map{|e| e.to_bibtex}.to_json
   end
 end

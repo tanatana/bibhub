@@ -14,7 +14,7 @@
 </p>
 <% if login? %>
 コメント：<br>
-<form action="/api/bibtex/add_comment" id="commentPostForm">
+<form action="/api/bibtex/comment/add" id="commentPostForm">
   <textarea id="commentText" name="comment" rows="10" cols="50"></textarea>
   <input type="hidden" value="<%= @bibtex.id %>" name="bibtex_id">
   <input type="submit" value="送信">
