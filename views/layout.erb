@@ -8,11 +8,7 @@
     <link rel="stylesheet" href="/css/bibhub.css" type="text/css" media="screen" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-      $('#myModal').modal({
-      keyboard: false
-      })
-    </script>
+    <script type="text/javascript" src="/js/bibhub.js"></script>
   </head>
   <body>
     <div class="container">
@@ -25,8 +21,7 @@
                 <li><form class="navbar-search pull-left" method="get" action="/api/search" style="margin-top: 7px;">
                     <input type="text" class="search-query span2" placeholder="Search" style="height: 23px;" name="word">
                 </form></li>
-                <li><a data-toggle="modal" href="#myModal">BibTeXを追加</a></li>
-
+                <li><a data-toggle="modal" href="#bibtexModal">BibTeXを追加</a></li>
                 <li class="divider-vertical"></li>
                 <li><a href="/logout">ログアウト</a></li>
 
@@ -70,7 +65,7 @@
       </div>
       <hr />
     </div>
-    <div class="modal" id="myModal" style="display: none;">
+    <div class="modal" id="bibtexModal">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">×</a>
         <h3>BibteXを登録</h3>
@@ -100,9 +95,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <a href="#myModal" data-toggle="modal" class="btn">Close</a>
+        <a href="#bibtexModal" data-toggle="modal" class="btn">Close</a>
       </div>
     </div>
-
   </body>
 </html>

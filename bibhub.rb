@@ -41,7 +41,7 @@ class BibhubApp < Sinatra::Base
     def export_button(user, bibtex)
       @user = user
       @bibtex = bibtex
-      erb :export_button
+      erb :export_button, :layout => false;
     end
   end
 
@@ -168,9 +168,14 @@ class BibhubApp < Sinatra::Base
 
   post '/api/user/export/add' do
     return "error" unless login?
-    @user.exports << Bibliography.find_by_id(params[:bibtex_id])
+    bib = Bibliography.find_by_id(params[:bibtex_id])
+    @user.exports << bib
     @user.save
-    redirect '/'
+
+    JSON.unparse({
+        result: true,
+        html: export_button(@user, bib)
+      })
   end
 
   post '/api/user/export/remove' do
@@ -179,6 +184,10 @@ class BibhubApp < Sinatra::Base
     return "error" unless bib
     @user.exports = @user.exports.delete_if{|e| e.id == bib.id}
     @user.save
-    redirect '/'
+
+    JSON.unparse({
+        result: true,
+        html: export_button(@user, bib)
+      })
   end
 end

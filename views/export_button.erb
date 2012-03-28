@@ -1,12 +1,12 @@
 <% if @user.exports.include? @bibtex %>
-<form method="POST" action="/api/user/export/remove">
+<form class="export-form" action="/api/user/export/remove">
   <input type="hidden" name="bibtex_id" value="<%= @bibtex.id %>" />
   <input type="submit"
          class="btn btn-primary"
          value="エクスポートリストから削除"/>
 </form>
 <% else %>
-<form method="POST" action="/api/user/export/add">
+<form class="export-form" action="/api/user/export/add">
   <input type="hidden" name="bibtex_id" value="<%= @bibtex.id %>" />
   <input type="submit"
          class="btn"
