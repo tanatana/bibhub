@@ -13,7 +13,7 @@
 
     <% @bibtex.each do |b| %>
     <tr>
-      <td><a href="/bibtex/<%= b.id %>"><%= b.title %><br><br><%= export_button @user, b %></a>
+      <td><a href="/bibtex/<%= b.id %>"><%= b.title %></a><br><br><%= export_button @user, b %>
       </td><td><%= b.author.split(/\s+and\s+/).first %>
       </td><td class="year"><%= b.year %>
       </td><td><%= b.journal %></td>
