@@ -179,7 +179,7 @@ class BibhubApp < Sinatra::Base
       bib.save
     }
 
-    bib.to_json
+    bibtex.to_json
   end
 
   get '/api/bibtex/*.bib' do
