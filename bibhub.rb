@@ -59,7 +59,6 @@ class BibhubApp < Sinatra::Base
     if login?
       @title = "ようこそ #{@user.screen_name} さん!"
       @bibtex = Bibliography.where({creator_id:@user.id}).sort(:created_at.desc).map{|e| e.to_bibtex}
-
       @comments = Comment.where({creator_id:@user.id}).limit(20).sort(:created_at.desc)
       erb :index
     else
@@ -169,7 +168,7 @@ class BibhubApp < Sinatra::Base
     bibtex = BibTeX.parse params["bibtex"][:tempfile].read.toutf8
     bibtex.each{|e|
       hash = e.to_hash
-      bib = Bibliography.where("bibtex.title".to_sym => hash[:title]).first
+      bib = Bibliography.where("bibtex.title".to_sym => hash[:title], :creator_id => @user.id).first
       unless bib
         bib = Bibliography.new(:bibtex => e.to_hash)
         bib.creator = @user
