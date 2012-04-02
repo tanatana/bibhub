@@ -17,6 +17,8 @@ require 'json'
 class BibhubApp < Sinatra::Base
 
   MongoMapper.database = "bibhub"
+  CONSUMER_KEY, CONSUMER_SECRET = File.open("consumer.cfg").read.split("\n")
+
 
   configure do
     use Rack::Session::Cookie, :secret => "change me"
@@ -28,7 +30,7 @@ class BibhubApp < Sinatra::Base
   end
 
   use OmniAuth::Builder do
-    provider :twitter,'P2ZQaY38pGcxwMgShg3rXQ','aUKFW4xzx2tJEkK1dxnsZZCqJhQzhFV8uHUTGxjUc'
+    provider :twitter, CONSUMER_KEY, CONSUMER_SECRET
   end
 
   helpers do
